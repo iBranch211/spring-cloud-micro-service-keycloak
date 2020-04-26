@@ -1,0 +1,40 @@
+#Zuul Serverın Portu
+server:
+  port: 8081
+
+spring:
+  application:
+    name: zuul-server
+
+#Eureka Server Bağlantısı
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_SERVER_HOST:localhost}:${EUREKA_SERVER_PORT:8761}/eureka/
+    register-with-eureka: false
+  instance:
+    preferIpAddress: true
+
+#Keycloak Ayarları
+keycloak:
+  auth-server-url: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:9080}/auth
+  ssl-required: none
+  realm: ${KEYCLOAK_REALM:springcloud}
+  resource: ${KEYCLOAK_CLIENT:api-services}
+  bearer-only: true
+  confidential-port: 0
+  use-resource-role-mappings: false
+  principal-attribute: preferred_username
+
+
+zuul:
+  ignoredServices: "*"
+  sensitiveHeaders:
+  routes:
+    product-service:
+      path: /**
+      serviceId: product-service
+      stripPrefix: true
+
+
+

@@ -1,0 +1,19 @@
+#Eureka Serverın Portu
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+#Eureka Server Ayarları
+eureka:
+  server:
+    eviction-interval-timer-in-ms: 1000
+  instance:
+    hostname: ${EUREKA_SERVER_HOST:localhost}
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${EUREKA_SERVER_HOST:localhost}:${EUREKA_SERVER_PORT:8761}/eureka/

@@ -1,4 +1,4 @@
-package com.spring.micro.controller;
+package com.spring.micro.controller.rest;
 
 import com.spring.micro.dto.ProductDto;
 import com.spring.micro.model.Product;
@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -42,7 +42,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Page<Product>> getAll(Pageable pageable){
         return ResponseEntity.ok(productService.getPagination(pageable));
     }

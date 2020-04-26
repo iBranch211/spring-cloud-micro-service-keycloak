@@ -12,6 +12,7 @@ eureka:
     serviceUrl:
       defaultZone: http://${EUREKA_SERVER_HOST:localhost}:${EUREKA_SERVER_PORT:8761}/eureka/
     register-with-eureka: false
+    fetchRegistry: true
   instance:
     preferIpAddress: true
 
@@ -26,13 +27,34 @@ keycloak:
   use-resource-role-mappings: false
   principal-attribute: preferred_username
 
+ribbon:
+  ReadTimeout: 60000
+  connection-timeout: 3000
+  eureka:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
 
 zuul:
   ignoredServices: "*"
   sensitiveHeaders:
+  host:
+    time-to-live: -1
+    connect-timeout-millis: 5000
+    max-per-route-connections: 10000
+    max-total-connections: 5000
+    socket-timeout-millis: 60000
+  semaphore:
+    max-semaphores: 500
   routes:
     product-service:
-      path: /**
+      path: /api/v1/products/**
       serviceId: product-service
       stripPrefix: true
 

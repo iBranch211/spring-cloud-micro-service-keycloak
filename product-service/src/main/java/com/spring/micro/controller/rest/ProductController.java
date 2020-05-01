@@ -4,6 +4,9 @@ import com.spring.micro.dto.ProductDto;
 import com.spring.micro.model.Product;
 import com.spring.micro.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.TokenVerifier;
+import org.keycloak.common.VerificationException;
+import org.keycloak.representations.AccessToken;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import java.security.Principal;
 public class ProductController {
 
     private final ProductService productService;
+    private final AccessToken accessToken;
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getById(@PathVariable String id){
@@ -26,8 +30,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestHeader (name="Authorization") String token,@Valid @RequestBody ProductDto productDto){
-        System.out.println(token);
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) throws VerificationException {
+
+        System.out.println(accessToken.getPreferredUsername());
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(productDto));
     }
 
